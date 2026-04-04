@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "PerceptionConfig",
+  "description": "感知粒度配置",
+  "required": ["version", "user_id", "cei_config"],
+  "properties": {
+    "version": {"type": "string"},
+    "user_id": {"type": "string"},
+    "cei_config": {
+      "type": "object",
+      "properties": {
+        "warning_threshold": {"type": "number"},
+        "scenario_model": {"type": "string"},
+        "sampling": {
+          "type": "object",
+          "properties": {
+            "interval_seconds": {"type": "integer"},
+            "aggregation_window_seconds": {"type": "integer"},
+            "metrics": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "trigger": {
+          "type": "object",
+          "properties": {
+            "detection_window_minutes": {"type": "integer"},
+            "confirmation_count": {"type": "integer"},
+            "cooldown_minutes": {"type": "integer"}
+          }
+        }
+      }
+    }
+  }
+}

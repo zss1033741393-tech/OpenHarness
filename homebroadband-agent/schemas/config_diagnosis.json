@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "DiagnosisConfig",
+  "description": "故障诊断配置",
+  "required": ["version", "user_id", "diagnosis_config"],
+  "properties": {
+    "version": {"type": "string"},
+    "user_id": {"type": "string"},
+    "diagnosis_config": {
+      "type": "object",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "trigger_condition": {"type": "string"},
+              "timeout_seconds": {"type": "integer"},
+              "priority": {"type": "integer"}
+            }
+          }
+        },
+        "escalation": {
+          "type": "object",
+          "properties": {
+            "auto_escalate_after_minutes": {"type": "integer"},
+            "escalation_levels": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    }
+  }
+}

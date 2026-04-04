@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "GoalSpec",
+  "description": "家宽体验感知优化目标结构体",
+  "required": ["user_type", "scenario", "guarantee_period", "guarantee_target", "core_metrics"],
+  "properties": {
+    "user_type": {
+      "type": "string",
+      "description": "用户类型",
+      "enum": ["直播用户", "游戏用户", "办公用户", "教育用户", "普通家庭用户", "SOHO用户"]
+    },
+    "scenario": {
+      "type": "string",
+      "description": "应用场景",
+      "enum": ["直播推流", "在线游戏", "视频会议", "在线教育", "高清视频", "智能家居", "综合场景"]
+    },
+    "guarantee_period": {
+      "type": "object",
+      "description": "保障时段",
+      "properties": {
+        "type": {"type": "string", "enum": ["全天候", "固定时段", "动态时段"]},
+        "time_ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {"type": "string", "format": "time"},
+              "end": {"type": "string", "format": "time"},
+              "days": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
+    "guarantee_target": {
+      "type": "object",
+      "description": "保障对象",
+      "properties": {
+        "priority": {"type": "string", "enum": ["高", "中", "低"]},
+        "focus": {"type": "string", "enum": ["上行", "下行", "双向"]},
+        "applications": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "重点保障应用列表"
+        },
+        "sensitivity": {
+          "type": "object",
+          "properties": {
+            "latency": {"type": "string", "enum": ["高敏感", "中敏感", "低敏感"]},
+            "jitter": {"type": "string", "enum": ["高敏感", "中敏感", "低敏感"]},
+            "packet_loss": {"type": "string", "enum": ["高敏感", "中敏感", "低敏感"]}
+          }
+        }
+      }
+    },
+    "core_metrics": {
+      "type": "object",
+      "description": "核心指标",
+      "properties": {
+        "cei_threshold": {"type": "number", "description": "CEI预警阈值"},
+        "response_sla": {"type": "string", "description": "闭环响应 SLA"},
+        "availability_target": {"type": "number", "description": "可用性目标 (%)"}
+      }
+    },
+    "user_history": {
+      "type": "object",
+      "description": "用户应用历史（先验依据）",
+      "properties": {
+        "app_history": {
+          "type": "object",
+          "properties": {
+            "perception_trigger_time": {"type": "string", "description": "感知触发时间"},
+            "slice_enable_time": {"type": "string", "description": "切片开启时间"},
+            "key_apps": {"type": "array", "items": {"type": "string"}, "description": "重点保障应用"},
+            "power_saving_trigger_time": {"type": "string", "description": "节能触发时间"}
+          }
+        },
+        "network_kpi": {
+          "type": "object",
+          "properties": {
+            "periodic_behaviors": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "周期性网络行为"
+            },
+            "alarm_suppression": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "告警抑制情况"
+            }
+          }
+        }
+      }
+    }
+  }
+}

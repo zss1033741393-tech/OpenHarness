@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "DynamicOptimizationConfig",
+  "description": "智能动态优化配置",
+  "required": ["version", "user_id", "optimization_config"],
+  "properties": {
+    "version": {"type": "string"},
+    "user_id": {"type": "string"},
+    "optimization_config": {
+      "type": "object",
+      "properties": {
+        "realtime_optimization": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "check_interval_seconds": {"type": "integer"},
+            "actions": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "predictive_optimization": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "prediction_window_minutes": {"type": "integer"},
+            "model_type": {"type": "string"}
+          }
+        },
+        "power_saving": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "trigger_time": {"type": "string"},
+            "resume_time": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}
