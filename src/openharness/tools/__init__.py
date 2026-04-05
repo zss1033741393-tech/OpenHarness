@@ -42,6 +42,13 @@ from openharness.tools.tool_search_tool import ToolSearchTool
 from openharness.tools.web_fetch_tool import WebFetchTool
 from openharness.tools.web_search_tool import WebSearchTool
 
+# Homebroadband domain tools
+from openharness.tools.plan_from_template_tool import PlanFromTemplateTool
+from openharness.tools.constraint_check_tool import ConstraintCheckTool
+from openharness.tools.config_translate_tool import ConfigTranslateTool
+from openharness.tools.device_query_tool import DeviceQueryTool
+from openharness.tools.kpi_query_tool import KpiQueryTool
+
 
 def create_default_tool_registry(mcp_manager=None) -> ToolRegistry:
     """Return the default built-in tool registry."""
@@ -84,6 +91,12 @@ def create_default_tool_registry(mcp_manager=None) -> ToolRegistry:
         SendMessageTool(),
         TeamCreateTool(),
         TeamDeleteTool(),
+        # Homebroadband domain tools
+        PlanFromTemplateTool(),
+        ConstraintCheckTool(),
+        ConfigTranslateTool(),
+        DeviceQueryTool(),
+        KpiQueryTool(),
     ):
         registry.register(tool)
     if mcp_manager is not None:

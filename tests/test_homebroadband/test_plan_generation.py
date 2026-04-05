@@ -7,11 +7,7 @@ from pathlib import Path
 
 import pytest
 
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from tools.plan_from_template_tool import (
+from openharness.tools.plan_from_template_tool import (
     PlanFromTemplateTool,
     PlanFromTemplateInput,
     _render_cei_perception,
@@ -57,7 +53,7 @@ class TestCeiPerceptionRenderer:
             "core_metrics": {},
         }
         result = _render_cei_perception(goal)
-        assert result["cei_warning_threshold"]["value"] == 70  # falls back to default
+        assert result["cei_warning_threshold"]["value"] == 70
         assert result["cei_scenario_model"]["model_type"] == "balanced"
 
 
@@ -66,7 +62,7 @@ class TestFaultDiagnosisRenderer:
         result = _render_fault_diagnosis(sample_goal_spec)
         methods = {m["name"]: m["enabled"] for m in result["diagnosis_methods"]}
         assert methods["光衰检测"] is True
-        assert methods["路由追踪诊断"] is True  # Live streaming enables all
+        assert methods["路由追踪诊断"] is True
 
     def test_high_priority_escalation(self, sample_goal_spec: dict):
         result = _render_fault_diagnosis(sample_goal_spec)
@@ -116,7 +112,7 @@ class TestDynamicOptimizationRenderer:
     def test_appflow_for_live_streaming(self, sample_goal_spec: dict):
         result = _render_dynamic_optimization(sample_goal_spec)
         assert result["appflow_policy"]["enabled"] is True
-        assert len(result["appflow_policy"]["rules"]) == 2  # 抖音直播, OBS推流
+        assert len(result["appflow_policy"]["rules"]) == 2
 
     def test_power_saving_disabled_for_high_priority(self, sample_goal_spec: dict):
         result = _render_dynamic_optimization(sample_goal_spec)

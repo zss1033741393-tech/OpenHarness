@@ -28,6 +28,10 @@ frontend/terminal/node_modules/
 
 # User data (never commit API keys or session data)
 .openharness/
+# But track the homebroadband plugin (project-level extension)
+!.openharness/plugins/
+!.openharness/plugins/homebroadband/
+!.openharness/plugins/homebroadband/**
 react_tui_smoke.txt
 
 # OS

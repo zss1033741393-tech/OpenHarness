@@ -1,8 +1,0 @@
-{
-  "name": "homebroadband-plugin",
-  "version": "0.1.0",
-  "description": "家宽体验感知优化 Plugin - 提供领域 Skill 和 Hook",
-  "enabled": true,
-  "skills": [],
-  "hooks": {}
-}

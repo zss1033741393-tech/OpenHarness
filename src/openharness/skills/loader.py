@@ -38,9 +38,16 @@ def load_skill_registry(cwd: str | Path | None = None) -> SkillRegistry:
 
 
 def load_user_skills() -> list[SkillDefinition]:
-    """Load markdown skills from the user config directory."""
+    """Load markdown skills from the user config directory.
+
+    Supports both flat ``*.md`` files and ADK-pattern directories
+    (``<name>/SKILL.md`` with optional ``references/`` and ``assets/``).
+    """
     skills: list[SkillDefinition] = []
-    for path in sorted(get_user_skills_dir().glob("*.md")):
+    skills_dir = get_user_skills_dir()
+
+    # Flat .md files
+    for path in sorted(skills_dir.glob("*.md")):
         content = path.read_text(encoding="utf-8")
         name, description = _parse_skill_markdown(path.stem, content)
         skills.append(
@@ -52,6 +59,22 @@ def load_user_skills() -> list[SkillDefinition]:
                 path=str(path),
             )
         )
+
+    # Directory-based skills (ADK pattern): <name>/SKILL.md
+    for skill_md in sorted(skills_dir.glob("*/SKILL.md")):
+        content = skill_md.read_text(encoding="utf-8")
+        default_name = skill_md.parent.name
+        name, description = _parse_skill_markdown(default_name, content)
+        skills.append(
+            SkillDefinition(
+                name=name,
+                description=description,
+                content=content,
+                source="user",
+                path=str(skill_md),
+            )
+        )
+
     return skills
 
 

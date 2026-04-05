@@ -1,4 +1,4 @@
-"""Shared test fixtures for homebroadband-agent tests."""
+"""Shared test fixtures for homebroadband tests."""
 
 from __future__ import annotations
 
@@ -6,6 +6,10 @@ import json
 from pathlib import Path
 
 import pytest
+
+
+# Plugin root for skill and schema paths
+PLUGIN_ROOT = Path(__file__).parent.parent.parent / ".openharness" / "plugins" / "homebroadband"
 
 
 @pytest.fixture

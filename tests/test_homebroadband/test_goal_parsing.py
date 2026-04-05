@@ -7,9 +7,11 @@ from pathlib import Path
 
 import pytest
 
+from tests.test_homebroadband.conftest import PLUGIN_ROOT
 
-SCHEMA_PATH = Path(__file__).parent.parent / "schemas" / "goal_spec.json"
-SKILL_DIR = Path(__file__).parent.parent / "skills" / "goal-parsing"
+
+SCHEMA_PATH = PLUGIN_ROOT / "schemas" / "goal_spec.json"
+SKILL_DIR = PLUGIN_ROOT / "skills" / "goal-parsing"
 SKILL_PATH = SKILL_DIR / "SKILL.md"
 
 
@@ -84,7 +86,6 @@ class TestGoalParsingSkill:
     def test_skill_has_goal_spec_template_asset(self):
         asset_path = SKILL_DIR / "assets" / "goal-spec-template.json"
         assert asset_path.exists()
-        import json
         template = json.loads(asset_path.read_text(encoding="utf-8"))
         assert "user_type" in template
         assert "scenario" in template

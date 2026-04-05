@@ -1,0 +1,12 @@
+{
+  "name": "homebroadband",
+  "version": "0.1.0",
+  "description": "家宽体验感知优化 Agent 智能体 - 面向运营商网络运维场景的端到端闭环优化插件",
+  "enabled_by_default": true,
+  "skills_dir": "skills",
+  "hooks_file": "hooks.json",
+  "mcp_file": "mcp.json",
+  "author": {
+    "name": "OpenHarness Community"
+  }
+}

@@ -7,11 +7,7 @@ from pathlib import Path
 
 import pytest
 
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from tools.config_translate_tool import (
+from openharness.tools.config_translate_tool import (
     ConfigTranslateTool,
     ConfigTranslateInput,
     _translate_perception,

@@ -107,9 +107,16 @@ def load_plugin(path: Path, enabled_plugins: dict[str, bool]) -> LoadedPlugin | 
 
 
 def _load_plugin_skills(path: Path) -> list[SkillDefinition]:
+    """Load skills from a plugin directory.
+
+    Supports both flat ``*.md`` files and ADK-pattern directories
+    (``<name>/SKILL.md`` with optional ``references/`` and ``assets/``).
+    """
     if not path.exists():
         return []
     skills: list[SkillDefinition] = []
+
+    # Flat .md files
     for skill_path in sorted(path.glob("*.md")):
         content = skill_path.read_text(encoding="utf-8")
         name, description = _parse_skill_markdown(skill_path.stem, content)
@@ -122,6 +129,22 @@ def _load_plugin_skills(path: Path) -> list[SkillDefinition]:
                 path=str(skill_path),
             )
         )
+
+    # Directory-based skills (ADK pattern): <name>/SKILL.md
+    for skill_md in sorted(path.glob("*/SKILL.md")):
+        content = skill_md.read_text(encoding="utf-8")
+        default_name = skill_md.parent.name
+        name, description = _parse_skill_markdown(default_name, content)
+        skills.append(
+            SkillDefinition(
+                name=name,
+                description=description,
+                content=content,
+                source="plugin",
+                path=str(skill_md),
+            )
+        )
+
     return skills
 
 

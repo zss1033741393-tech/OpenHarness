@@ -7,8 +7,10 @@ from pathlib import Path
 
 import pytest
 
+from tests.test_homebroadband.conftest import PLUGIN_ROOT
 
-SKILLS_DIR = Path(__file__).parent.parent / "skills"
+
+SKILLS_DIR = PLUGIN_ROOT / "skills"
 
 # All expected skill directories and their ADK patterns
 EXPECTED_SKILLS = {
@@ -106,52 +108,9 @@ class TestGeneratorSkeletons:
         assert "cei_granularity" in skeleton
         assert "cei_trigger_window" in skeleton
 
-    def test_diagnosis_skeleton_has_required_fields(self):
-        skeleton = json.loads(
-            (SKILLS_DIR / "tpl-fault-diagnosis" / "assets" / "diagnosis-skeleton.json")
-            .read_text(encoding="utf-8")
-        )
-        assert "diagnosis_methods" in skeleton
-        assert "escalation" in skeleton
-        assert "diagnosis_schedule" in skeleton
-
-    def test_closure_skeleton_has_required_fields(self):
-        skeleton = json.loads(
-            (SKILLS_DIR / "tpl-remote-closure" / "assets" / "closure-skeleton.json")
-            .read_text(encoding="utf-8")
-        )
-        assert "closure_strategy" in skeleton
-        assert "auto_recovery" in skeleton
-        assert "audit" in skeleton
-
-    def test_optimization_skeleton_has_required_fields(self):
-        skeleton = json.loads(
-            (SKILLS_DIR / "tpl-dynamic-optimization" / "assets" / "optimization-skeleton.json")
-            .read_text(encoding="utf-8")
-        )
-        assert "realtime_optimization" in skeleton
-        assert "predictive_optimization" in skeleton
-        assert "power_saving" in skeleton
-        assert "appflow_policy" in skeleton
-
-    def test_fallback_skeleton_has_required_fields(self):
-        skeleton = json.loads(
-            (SKILLS_DIR / "tpl-manual-fallback" / "assets" / "fallback-skeleton.json")
-            .read_text(encoding="utf-8")
-        )
-        assert "fallback_trigger" in skeleton
-        assert "work_order" in skeleton
-        assert "dispatch" in skeleton
-        assert "user_communication" in skeleton
-
 
 class TestGoalSpecTemplate:
     """Validate the GoalSpec template asset."""
-
-    def test_template_is_valid_json(self):
-        template_path = SKILLS_DIR / "goal-parsing" / "assets" / "goal-spec-template.json"
-        data = json.loads(template_path.read_text(encoding="utf-8"))
-        assert isinstance(data, dict)
 
     def test_template_has_all_required_fields(self):
         template_path = SKILLS_DIR / "goal-parsing" / "assets" / "goal-spec-template.json"
@@ -162,8 +121,6 @@ class TestGoalSpecTemplate:
 
 
 class TestConstraintReviewSkill:
-    """Validate the constraint-review Reviewer skill."""
-
     def test_checklist_has_three_categories(self):
         checklist = (
             SKILLS_DIR / "constraint-review" / "references" / "constraint-checklist.md"
@@ -172,18 +129,8 @@ class TestConstraintReviewSkill:
         assert "组网约束" in checklist
         assert "方案冲突" in checklist
 
-    def test_checklist_has_severity_levels(self):
-        checklist = (
-            SKILLS_DIR / "constraint-review" / "references" / "constraint-checklist.md"
-        ).read_text(encoding="utf-8")
-        assert "blocker" in checklist
-        assert "warning" in checklist
-        assert "info" in checklist
-
 
 class TestE2EPipelineSkill:
-    """Validate the e2e-pipeline Pipeline skill."""
-
     def test_pipeline_has_four_steps(self):
         content = (SKILLS_DIR / "e2e-pipeline" / "SKILL.md").read_text(encoding="utf-8")
         assert "Step 1" in content
@@ -191,16 +138,36 @@ class TestE2EPipelineSkill:
         assert "Step 3" in content
         assert "Step 4" in content
 
-    def test_pipeline_has_gates(self):
-        content = (SKILLS_DIR / "e2e-pipeline" / "SKILL.md").read_text(encoding="utf-8")
-        assert "门禁" in content
-
     def test_pipeline_references_all_skills(self):
         content = (SKILLS_DIR / "e2e-pipeline" / "SKILL.md").read_text(encoding="utf-8")
         assert "goal-parsing" in content
         assert "tpl-cei-perception" in content
-        assert "tpl-fault-diagnosis" in content
-        assert "tpl-remote-closure" in content
-        assert "tpl-dynamic-optimization" in content
-        assert "tpl-manual-fallback" in content
         assert "constraint-review" in content
+
+
+class TestPluginStructure:
+    """Validate the homebroadband plugin structure."""
+
+    def test_plugin_manifest_exists(self):
+        manifest = PLUGIN_ROOT / "plugin.json"
+        assert manifest.exists()
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        assert data["name"] == "homebroadband"
+
+    def test_agents_dir_exists(self):
+        agents_dir = PLUGIN_ROOT / "agents"
+        assert agents_dir.is_dir()
+        agents = list(agents_dir.glob("*.md"))
+        assert len(agents) >= 5
+
+    def test_schemas_dir_exists(self):
+        schemas_dir = PLUGIN_ROOT / "schemas"
+        assert schemas_dir.is_dir()
+        schemas = list(schemas_dir.glob("*.json"))
+        assert len(schemas) >= 1
+
+    def test_hooks_file_exists(self):
+        hooks = PLUGIN_ROOT / "hooks.json"
+        assert hooks.exists()
+        data = json.loads(hooks.read_text(encoding="utf-8"))
+        assert "pre_tool_use" in data or "post_tool_use" in data

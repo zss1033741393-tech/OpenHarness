@@ -7,11 +7,7 @@ from pathlib import Path
 
 import pytest
 
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from tools.constraint_check_tool import (
+from openharness.tools.constraint_check_tool import (
     ConstraintCheckTool,
     ConstraintCheckInput,
     _check_performance,
@@ -29,7 +25,6 @@ class TestPerformanceCheck:
         assert result["passed"] is True
 
     def test_fail_too_many_metrics(self, sample_solution_plan: dict):
-        # Override with too many metrics for a weaker device
         sample_solution_plan["plans"]["experience_perception"]["cei_granularity"]["metrics"] = [
             f"metric_{i}" for i in range(15)
         ]
@@ -55,11 +50,9 @@ class TestNetworkTopologyCheck:
 class TestConflictCheck:
     def test_no_conflicts_when_power_saving_disabled(self, sample_solution_plan: dict):
         result = _check_conflicts(sample_solution_plan)
-        # Power saving is disabled, so no time overlap conflict
         assert all("节能时段" not in v for v in result.get("violations", []))
 
     def test_power_saving_guarantee_period_conflict(self, sample_solution_plan: dict):
-        # Enable power saving during guarantee period
         sample_solution_plan["plans"]["dynamic_optimization"]["power_saving"] = {
             "enabled": True,
             "trigger_time": "21:00",
@@ -84,7 +77,6 @@ class TestTimeOverlaps:
 class TestConstraintCheckTool:
     @pytest.mark.asyncio
     async def test_full_check_pass(self, sample_solution_plan: dict, tmp_work_dir: Path):
-        # Disable appflow to avoid known conflict with 5min detection window
         sample_solution_plan["plans"]["dynamic_optimization"]["appflow_policy"]["enabled"] = False
         tool = ConstraintCheckTool()
         ctx = ToolExecutionContext(cwd=tmp_work_dir)
