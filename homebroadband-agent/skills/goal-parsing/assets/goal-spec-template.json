@@ -1,0 +1,35 @@
+{
+  "user_type": "",
+  "scenario": "",
+  "guarantee_period": {
+    "type": "全天候",
+    "time_ranges": []
+  },
+  "guarantee_target": {
+    "priority": "中",
+    "focus": "双向",
+    "applications": [],
+    "sensitivity": {
+      "latency": "中敏感",
+      "jitter": "中敏感",
+      "packet_loss": "中敏感"
+    }
+  },
+  "core_metrics": {
+    "cei_threshold": 70,
+    "response_sla": "<30min",
+    "availability_target": 99.0
+  },
+  "user_history": {
+    "app_history": {
+      "perception_trigger_time": "",
+      "slice_enable_time": "",
+      "key_apps": [],
+      "power_saving_trigger_time": ""
+    },
+    "network_kpi": {
+      "periodic_behaviors": [],
+      "alarm_suppression": []
+    }
+  }
+}

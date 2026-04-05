@@ -1,0 +1,57 @@
+{
+  "fallback_trigger": {
+    "auto_diagnosis_failed": true,
+    "auto_recovery_failed": true,
+    "cei_below_critical": true,
+    "critical_threshold": 40,
+    "user_complaint": true,
+    "max_auto_attempts_exceeded": true
+  },
+  "work_order": {
+    "auto_create": true,
+    "priority_mapping": {
+      "高": "P1-紧急",
+      "中": "P2-重要",
+      "低": "P3-一般"
+    },
+    "required_info": [
+      "用户ID",
+      "故障现象描述",
+      "自动诊断结果",
+      "自动修复尝试记录",
+      "当前CEI评分",
+      "网络拓扑信息"
+    ],
+    "sla": {
+      "P1": {"response_minutes": 15, "resolve_hours": 4},
+      "P2": {"response_minutes": 30, "resolve_hours": 8},
+      "P3": {"response_minutes": 60, "resolve_hours": 24}
+    }
+  },
+  "dispatch": {
+    "auto_dispatch": false,
+    "dispatch_rules": [
+      {
+        "condition": "光衰问题",
+        "team": "线路维护组",
+        "skill_required": "光纤熔接"
+      },
+      {
+        "condition": "设备故障",
+        "team": "设备维护组",
+        "skill_required": "网关更换"
+      },
+      {
+        "condition": "WIFI覆盖问题",
+        "team": "装维组",
+        "skill_required": "组网优化"
+      }
+    ]
+  },
+  "user_communication": {
+    "auto_notify": true,
+    "notify_template": "standard",
+    "channels": ["sms", "app_push"],
+    "progress_update_interval_minutes": 60
+  }
+}

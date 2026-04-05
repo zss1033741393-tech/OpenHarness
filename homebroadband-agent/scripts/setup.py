@@ -27,13 +27,17 @@ def setup():
         shutil.copy2(f, agents_dst / f.name)
         print(f"  Copied agent: {f.name}")
 
-    # Copy skills
+    # Copy skills (directory-based: each skill is a directory with SKILL.md + references/ + assets/)
     skills_src = project_root / "skills"
     skills_dst = config_dir / "skills"
     skills_dst.mkdir(parents=True, exist_ok=True)
-    for f in skills_src.glob("*.md"):
-        shutil.copy2(f, skills_dst / f.name)
-        print(f"  Copied skill: {f.name}")
+    for skill_dir in skills_src.iterdir():
+        if skill_dir.is_dir() and (skill_dir / "SKILL.md").exists():
+            dst_dir = skills_dst / skill_dir.name
+            if dst_dir.exists():
+                shutil.rmtree(dst_dir)
+            shutil.copytree(skill_dir, dst_dir)
+            print(f"  Copied skill: {skill_dir.name}/")
 
     # Copy hooks
     hooks_src = project_root / "hooks"

@@ -1,0 +1,49 @@
+{
+  "diagnosis_methods": [
+    {
+      "name": "光衰检测",
+      "enabled": true,
+      "trigger_condition": "cei_score < threshold",
+      "timeout_seconds": 60,
+      "priority": 1
+    },
+    {
+      "name": "WIFI信道诊断",
+      "enabled": true,
+      "trigger_condition": "wifi_interference_detected",
+      "timeout_seconds": 120,
+      "priority": 2
+    },
+    {
+      "name": "PPPoE连接诊断",
+      "enabled": true,
+      "trigger_condition": "connection_drop_detected",
+      "timeout_seconds": 90,
+      "priority": 3
+    },
+    {
+      "name": "DNS解析诊断",
+      "enabled": true,
+      "trigger_condition": "dns_resolution_slow",
+      "timeout_seconds": 30,
+      "priority": 4
+    },
+    {
+      "name": "路由追踪诊断",
+      "enabled": false,
+      "trigger_condition": "high_rtt_detected",
+      "timeout_seconds": 180,
+      "priority": 5
+    }
+  ],
+  "escalation": {
+    "auto_escalate_after_minutes": 30,
+    "escalation_levels": ["L1-自动诊断", "L2-远程运维", "L3-现场处理"],
+    "max_auto_retries": 3
+  },
+  "diagnosis_schedule": {
+    "proactive_check_enabled": false,
+    "proactive_check_interval_hours": 24,
+    "check_time_window": {"start": "02:00", "end": "06:00"}
+  }
+}

@@ -9,7 +9,8 @@ import pytest
 
 
 SCHEMA_PATH = Path(__file__).parent.parent / "schemas" / "goal_spec.json"
-SKILL_PATH = Path(__file__).parent.parent / "skills" / "goal-parsing.md"
+SKILL_DIR = Path(__file__).parent.parent / "skills" / "goal-parsing"
+SKILL_PATH = SKILL_DIR / "SKILL.md"
 
 
 class TestGoalSpecSchema:
@@ -54,6 +55,9 @@ class TestGoalSpecSchema:
 
 
 class TestGoalParsingSkill:
+    def test_skill_dir_exists(self):
+        assert SKILL_DIR.is_dir()
+
     def test_skill_file_exists(self):
         assert SKILL_PATH.exists()
 
@@ -62,11 +66,29 @@ class TestGoalParsingSkill:
         assert content.startswith("---")
         assert "name: goal-parsing" in content
 
-    def test_skill_has_semantic_mapping(self):
+    def test_skill_has_inversion_pattern(self):
         content = SKILL_PATH.read_text(encoding="utf-8")
+        assert "pattern: inversion" in content
+        assert "Phase 1" in content
+        assert "Phase 2" in content
+        assert "Phase 3" in content
+
+    def test_skill_has_semantic_mapping_reference(self):
+        ref_path = SKILL_DIR / "references" / "semantic-mapping.md"
+        assert ref_path.exists()
+        content = ref_path.read_text(encoding="utf-8")
         assert "语义映射表" in content
         assert "直播" in content
         assert "游戏" in content
+
+    def test_skill_has_goal_spec_template_asset(self):
+        asset_path = SKILL_DIR / "assets" / "goal-spec-template.json"
+        assert asset_path.exists()
+        import json
+        template = json.loads(asset_path.read_text(encoding="utf-8"))
+        assert "user_type" in template
+        assert "scenario" in template
+        assert "guarantee_target" in template
 
     def test_skill_has_default_values(self):
         content = SKILL_PATH.read_text(encoding="utf-8")

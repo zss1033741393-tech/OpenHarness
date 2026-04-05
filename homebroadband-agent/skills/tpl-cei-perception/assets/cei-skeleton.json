@@ -1,0 +1,25 @@
+{
+  "cei_warning_threshold": {
+    "level": "标准",
+    "value": 70,
+    "description": "默认标准阈值"
+  },
+  "cei_scenario_model": {
+    "model_type": "balanced",
+    "parameters": {
+      "primary_metric": "cei_score",
+      "secondary_metrics": ["rtt", "packet_loss", "jitter"],
+      "weights": {"cei_score": 0.4, "rtt": 0.2, "packet_loss": 0.2, "jitter": 0.2}
+    }
+  },
+  "cei_granularity": {
+    "sampling_interval_seconds": 900,
+    "aggregation_window_seconds": 300,
+    "metrics": ["bandwidth", "packet_loss", "rtt", "jitter", "cei_score"]
+  },
+  "cei_trigger_window": {
+    "detection_window_minutes": 15,
+    "confirmation_count": 3,
+    "cooldown_minutes": 30
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "realtime_optimization": {
+    "enabled": true,
+    "check_interval_seconds": 300,
+    "actions": [
+      {
+        "name": "WIFI频段自动切换",
+        "enabled": true,
+        "condition": "signal_quality_degraded",
+        "target": "切换至最优频段(2.4G/5G)"
+      },
+      {
+        "name": "信道自动优化",
+        "enabled": true,
+        "condition": "channel_interference_high",
+        "target": "切换至干扰最小信道"
+      },
+      {
+        "name": "带宽动态分配",
+        "enabled": false,
+        "condition": "bandwidth_contention",
+        "target": "按优先级重新分配带宽"
+      },
+      {
+        "name": "漫游优化",
+        "enabled": false,
+        "condition": "roaming_quality_poor",
+        "target": "优化AP切换阈值"
+      }
+    ]
+  },
+  "predictive_optimization": {
+    "enabled": false,
+    "prediction_window_minutes": 30,
+    "model_type": "time_series",
+    "actions": [
+      {
+        "name": "预调度带宽",
+        "trigger": "predicted_peak_traffic",
+        "advance_minutes": 15
+      },
+      {
+        "name": "预切换信道",
+        "trigger": "predicted_interference",
+        "advance_minutes": 10
+      }
+    ]
+  },
+  "power_saving": {
+    "enabled": false,
+    "trigger_time": "01:00",
+    "resume_time": "06:00",
+    "actions": ["降低WIFI发射功率", "关闭非必要端口", "降低采集频率"]
+  },
+  "appflow_policy": {
+    "enabled": false,
+    "rules": []
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "closure_strategy": {
+    "mode": "balanced",
+    "description": "均衡模式：自动修复常见问题，异常情况人工介入"
+  },
+  "auto_recovery": {
+    "enabled": true,
+    "max_retries": 3,
+    "retry_interval_seconds": 300,
+    "actions": [
+      {
+        "name": "WIFI信道自动切换",
+        "enabled": true,
+        "condition": "wifi_interference > threshold",
+        "rollback_supported": true
+      },
+      {
+        "name": "PPPoE自动重拨",
+        "enabled": true,
+        "condition": "pppoe_session_lost",
+        "rollback_supported": false
+      },
+      {
+        "name": "QoS策略自动调整",
+        "enabled": false,
+        "condition": "bandwidth_contention_detected",
+        "rollback_supported": true
+      },
+      {
+        "name": "DNS自动切换",
+        "enabled": true,
+        "condition": "dns_resolution_timeout",
+        "rollback_supported": true
+      },
+      {
+        "name": "网关自动重启",
+        "enabled": false,
+        "condition": "gateway_unresponsive",
+        "rollback_supported": false
+      }
+    ]
+  },
+  "audit": {
+    "enabled": true,
+    "audit_interval_minutes": 30,
+    "rollback_on_failure": true,
+    "success_criteria": {
+      "cei_improvement_threshold": 10,
+      "check_duration_minutes": 15
+    }
+  },
+  "notification": {
+    "notify_user": true,
+    "notify_channel": "sms",
+    "notify_on_auto_recovery": true,
+    "notify_on_escalation": true
+  }
+}
